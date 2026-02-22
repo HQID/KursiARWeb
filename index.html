@@ -1,61 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<meta charset="utf-8">
-<title>Kursi AR</title>
-<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Speaker - 3D Viewer</title>
+    
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
+    <style>
+        /* Reset margin dan membuat background rapi */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ecef;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Container untuk model 3D */
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            max-width: 800px; /* Batas maksimal lebar di layar PC */
+            max-height: 90vh; /* Menyisakan sedikit ruang di atas/bawah */
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        /* Modifikasi tampilan tombol AR agar lebih profesional */
+        .ar-button {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #0056b3;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.3s ease;
+        }
+
+        .ar-button:hover {
+            background-color: #004494;
+        }
+
+        /* Menyembunyikan tombol AR jika dibuka di PC (yang tidak support AR) */
+        model-viewer[ar-status="not-presenting"] > .ar-button {
+            display: block;
+        }
+    </style>
 </head>
+<body>
 
-<body style="margin:0; overflow:hidden;">
-
-<a-scene embedded>
-
-  <!-- Kamera -->
-  <a-entity camera position="0 1.6 0"></a-entity>
-
-  <!-- Smart Bench -->
-  <a-entity 
-    id="bench"
-    gltf-model="kursi.glb"
-    position="0 1 -3"
-    scale="0.5 0.5 0.5"
-    visible="false">
-  </a-entity>
-
-</a-scene>
-
-<button onclick="startAR()" 
-style="position:absolute; top:20px; left:20px; padding:10px;">
-Aktifkan Kamera
-</button>
-
-<button onclick="showBench()" 
-style="position:absolute; top:70px; left:20px; padding:10px;">
-Tampilkan Smart Bench
-</button>
-
-<script>
-function startAR() {
-  navigator.mediaDevices.getUserMedia({ video: true })
-  .then(stream => {
-    const video = document.createElement('video');
-    video.srcObject = stream;
-    video.autoplay = true;
-    video.style.position = "absolute";
-    video.style.top = 0;
-    video.style.left = 0;
-    video.style.width = "100%";
-    video.style.height = "100%";
-    video.style.objectFit = "cover";
-    document.body.appendChild(video);
-  })
-  .catch(err => alert("Kamera tidak diizinkan"));
-}
-
-function showBench() {
-  document.querySelector("#bench").setAttribute("visible", true);
-}
-</script>
+    <model-viewer 
+        src="kursi.glb" 
+        ar 
+        ar-modes="webxr scene-viewer quick-look" 
+        camera-controls 
+        auto-rotate 
+        rotation-per-second="30deg"
+        shadow-intensity="1.5"
+        environment-image="neutral"
+        alt="Model 3D Mesjid">
+        
+        <button slot="ar-button" class="ar-button">
+            Lihat di Dunia Nyata (AR)
+        </button>
+        
+    </model-viewer>
 
 </body>
 </html>
