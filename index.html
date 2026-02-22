@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Kursi AR</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+</head>
+
+<body style="margin: 0; overflow: hidden;">
+
+<a-scene
+  xr-mode-ui="enabled: true"
+  renderer="colorManagement: true;"
+  webxr="optionalFeatures: hit-test;">
+
+  <a-camera position="0 1.6 0"></a-camera>
+
+  <!-- Smart Bench -->
+  <a-entity 
+    id="bench"
+    gltf-model="kursi.glb"
+    scale="10 10 10"
+    position="0 0 -2">
+  </a-entity>
+
+</a-scene>
+
+</body>
+</html>
